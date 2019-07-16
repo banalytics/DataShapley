@@ -60,7 +60,7 @@ class DShap(object):
 
         if problem == 'classification':
             self.is_regression = False
-        elif problem == 'regression'
+        elif problem == 'regression':
             self.is_regression = True
         else:
             raise ValueError('Uknown problem type')
