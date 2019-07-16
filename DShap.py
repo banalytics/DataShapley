@@ -57,9 +57,14 @@ class DShap(object):
             self._initialize_instance(X, y, X_test, y_test, num_test, sources)
         if len(set(self.y)) > 2:
             assert self.metric in ['f1', 'auc'], 'Invalid metric!'
-        is_regression = (np.mean(self.y//1==self.y) != 1)
-        is_regression = is_regression or isinstance(self.y[0], np.float32)
-        self.is_regression = is_regression or isinstance(self.y[0], np.float64)
+
+        if problem == 'classification':
+            self.is_regression = False
+        elif problem == 'regression'
+            self.is_regression = True
+        else:
+            raise ValueError('Uknown problem type')
+
         self.model = return_model(self.model_family, **kwargs)
         self.random_score = self.init_score(self.metric)
             
