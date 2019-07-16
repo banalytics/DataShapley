@@ -18,7 +18,7 @@ from sklearn.metrics import f1_score, roc_auc_score
 
 class DShap(object):
     def __init__(self, X, y, X_test, y_test, num_test, sources=None, directory=None, 
-                 problem='classification', model_family='logistic', metric='accuracy',
+                 problem='classification', model_family='logistic', metric={'metric': 'accuracy', 'arguments': {}},
                  seed=None, **kwargs):
         """
         Args:
@@ -44,7 +44,8 @@ class DShap(object):
             tf.random.set_random_seed(seed)
         self.problem = problem
         self.model_family = model_family
-        self.metric = metric
+        self.metric = metric['metric']
+        self.metric_arguments = metric['arguments']
         self.directory = directory
         self.hidden_units = kwargs.get('hidden_layer_sizes', [])
         if self.model_family is 'logistic':
@@ -117,7 +118,7 @@ class DShap(object):
             return np.max(np.bincount(self.y_test).astype(float)/len(self.y_test))
         if metric == 'f1':
             return np.mean([f1_score(
-                self.y_test, np.random.permutation(self.y_test)) for _ in range(1000)])
+                self.y_test, np.random.permutation(self.y_test), **self.metric_arguments) for _ in range(1000)])
         if metric == 'auc':
             return 0.5
         random_scores = []
@@ -145,7 +146,7 @@ class DShap(object):
             return model.score(X, y)
         if metric == 'f1':
             assert len(set(y)) == 2, 'Data has to be binary for f1 metric.'
-            return f1_score(y, model.predict(X))
+            return f1_score(y, model.predict(X), **self.metric_arguments)
         if metric == 'auc':
             assert len(set(y)) == 2, 'Data has to be binary for auc metric.'
             return my_auc_score(model, X, y)
