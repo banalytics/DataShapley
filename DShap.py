@@ -84,7 +84,7 @@ class DShap(object):
             pkl.dump({'X': self.X, 'y': self.y, 'X_test': self.X_test,
                      'y_test': self.y_test, 'X_heldout': self.X_heldout,
                      'y_heldout':self.y_heldout, 'sources': self.sources}, 
-                     open(data_dir, 'wb'))        
+                     open(data_dir, 'wb'), protocol=4)
         loo_dir = os.path.join(self.directory, 'loo.pkl')
         self.vals_loo = None
         if os.path.exists(loo_dir):
@@ -101,10 +101,10 @@ class DShap(object):
         self.mem_tmc, self.mem_g = [np.zeros((0, self.X.shape[0])) for _ in range(2)]
         idxs_shape = (0, self.X.shape[0] if self.sources is None else len(self.sources.keys()))
         self.idxs_tmc, self.idxs_g = [np.zeros(idxs_shape).astype(int) for _ in range(2)]
-        pkl.dump({'mem_tmc': self.mem_tmc, 'idxs_tmc': self.idxs_tmc}, open(tmc_dir, 'wb'))
+        pkl.dump({'mem_tmc': self.mem_tmc, 'idxs_tmc': self.idxs_tmc}, open(tmc_dir, 'wb'), protocol=4)
         if self.model_family not in ['logistic', 'NN']:
             return
-        pkl.dump({'mem_g': self.mem_g, 'idxs_g': self.idxs_g}, open(g_dir, 'wb'))
+        pkl.dump({'mem_g': self.mem_g, 'idxs_g': self.idxs_g}, open(g_dir, 'wb'), protocol=4)
                 
     def init_score(self, metric):
         """ Gives the value of an initial untrained model."""
@@ -188,11 +188,11 @@ class DShap(object):
             return
         loo_dir = os.path.join(self.directory, 'loo.pkl')
         if not os.path.exists(loo_dir) or overwrite:
-            pkl.dump({'loo': self.vals_loo}, open(loo_dir, 'wb'))
+            pkl.dump({'loo': self.vals_loo}, open(loo_dir, 'wb'), protocol=4)
         tmc_dir = os.path.join(self.directory, 'mem_tmc_{}.pkl'.format(self.tmc_number.zfill(4)))
         g_dir = os.path.join(self.directory, 'mem_g_{}.pkl'.format(self.g_number.zfill(4)))  
-        pkl.dump({'mem_tmc': self.mem_tmc, 'idxs_tmc': self.idxs_tmc}, open(tmc_dir, 'wb'))
-        pkl.dump({'mem_g': self.mem_g, 'idxs_g': self.idxs_g}, open(g_dir, 'wb'))  
+        pkl.dump({'mem_tmc': self.mem_tmc, 'idxs_tmc': self.idxs_tmc}, open(tmc_dir, 'wb'), protocol=4)
+        pkl.dump({'mem_g': self.mem_g, 'idxs_g': self.idxs_g}, open(g_dir, 'wb'), protocol=4)
         
     def _tmc_shap(self, iterations, tolerance=None, sources=None):
         """Runs TMC-Shapley algorithm.
@@ -397,7 +397,7 @@ class DShap(object):
             os.remove(samples_dir)
         merged_dir = os.path.join(self.directory, 'mem_{}_0000.pkl'.format(key))
         pkl.dump({'mem_{}'.format(key): mem, 'idxs_{}'.format(key): idxs}, 
-                 open(merged_dir, 'wb'))
+                 open(merged_dir, 'wb'), protocol=4)
         return mem, idxs, vals
             
     def merge_results(self):
