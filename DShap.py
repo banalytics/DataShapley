@@ -15,8 +15,8 @@ import itertools
 import _pickle as pkl
 from sklearn.metrics import f1_score, roc_auc_score
 
+
 class DShap(object):
-    
     def __init__(self, X, y, X_test, y_test, num_test, sources=None, directory=None, 
                  problem='classification', model_family='logistic', metric='accuracy',
                  seed=None, **kwargs):
