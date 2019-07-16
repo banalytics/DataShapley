@@ -145,7 +145,7 @@ class DShap(object):
         if metric == 'accuracy':
             return model.score(X, y)
         if metric == 'f1':
-            assert len(set(y)) == 2, 'Data has to be binary for f1 metric.'
+            # assert len(set(y)) == 2, 'Data has to be binary for f1 metric.'
             return f1_score(y, model.predict(X), **self.metric_arguments)
         if metric == 'auc':
             assert len(set(y)) == 2, 'Data has to be binary for auc metric.'
