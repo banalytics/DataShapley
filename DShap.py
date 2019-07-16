@@ -4,8 +4,8 @@ import numpy as np
 import os
 import tensorflow as tf
 import sys
-from shap_utils import *
-from Shapley import ShapNN
+from .shap_utils import *
+from .Shapley import ShapNN
 from scipy.stats import spearmanr
 import shutil
 from sklearn.base import clone

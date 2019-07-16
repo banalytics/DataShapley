@@ -16,7 +16,7 @@ from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.svm import SVC, LinearSVC
 from sklearn.base import clone
 import inspect
-from Shapley import ShapNN, CShapNN
+from .Shapley import ShapNN, CShapNN
 from multiprocessing import dummy as multiprocessing
 from sklearn.metrics import roc_auc_score, f1_score
 import warnings
